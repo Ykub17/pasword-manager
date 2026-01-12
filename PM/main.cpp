@@ -26,4 +26,21 @@ int main(int argc, char** argv)
     CLI11_PARSE(app, argc, argv);
 
     // Тут буде логіка шифрування/дешифрування
+    if (app.got_subcommand("encrypt")) 
+    {
+        // Виклик функції шифрування
+        encryptFile(filename, password);
+        std::cout << "Файл успішно зашифровано: " << filename << std::endl;
+    }
+    else if (app.got_subcommand("decrypt"))    
+    {
+        // Виклик функції дешифрування
+        decryptFile(filename, password);
+        std::cout << "Файл успішно дешифровано: " << filename << std::endl;
+    } 
+    else 
+    {
+        std::cout << "Будь ласка, вкажіть команду: encrypt або decrypt" << std::endl;
+    }
+    return 0;
 }
