@@ -1,0 +1,14 @@
+# binaries
+password_encryptor
+a.out
+
+# encrypted / data files
+*.enc
+*.txt
+
+# macOS
+.DS_Store
+
+
+
+
