@@ -11,15 +11,34 @@
 1. Для збірки проекту по-перше треба встановити бібліотеку [libsodium](https://doc.libsodium.org/doc/installation) (подробна інструкція для її встановлення)
 
 2. Скомпілюйте проект:
-  g++ \
--I./include \
-./src/main.cpp ./src/encrypt.cpp ./src/decrypt.cpp ./src/user_io.cpp \
--L./libs \
--lsodium \
--o password_encryptor
+   g++ -std=c++17 -Iinclude \
+    src/main.cpp \
+    src/encrypt.cpp \
+    src/decrypt.cpp \
+    src/user_io.cpp \
+    src/sodium_crypto.cpp \
+    -Llibs -lsodium \
+    -o pasman
+
 
 ##  Користування проектом
-1. Для того щоб шифрувати треба вести таку команду *./password_encryptor encrypt --input pasw.txt --output pasw.enc --password MyStrongPassword123*, і також треба заздалегіть створити файл **pasw.txt** , де будуть міститься паролі 
+Запуск проекта ./pasman
+1. Для того щоб шифрувати треба вести таку команду *./pasman encrypt --input pasw.txt --output pasw.enc --password MyStrongPassword123*, і також треба заздалегіть створити файл **pasw.txt** , де будуть міститься паролі 
 
-2. Для дешифрування треба вести команду *./password_encryptor decrypt --input pasw.enc --output decrypted.txt --password MyStrongPassword123*      
+2. Для дешифрування треба вести команду *./pasman decrypt --input pasw.enc --output decrypted.txt --password MyStrongPassword123*  
 
+## Алгоритм шифруівння    
+1. Етап створення Salt(16 байтів) і  Nonce(26 байтів).
+ Salt використовується для того ,щоб пароль піля шифрування був унікальним. Nonce це код , який гарантує, що шифрування того самого файлу тим самим ключем завжди даватиме різний результат.
+
+2. Деривація ключа (KDF) 
+На вхід подається: пароль + salt.
+На виході отримуємо: Key (32 байти) — стійкий криптографічний ключ.
+3. Процес шифрування Використовується алгоритм XChaCha20-Poly1305. Він працює так: Дані файлу розбиваються на блоки. Алгоритм XChaCha20 шифрує дані за допомогою Key та Nonce.
+Алгоритм Poly1305 обчислює MAC (Message Authentication Code) — це 16-байтний «підпис», який додається в кінець зашифрованих даних. Він гарантує, що файл не був змінений після шифрування.
+
+4. Формування структури файлу
+Створюється пакет для того , щзоб у майбутньому було можливо дешифрувати файл 
+Сіль (16) — щоб ми могли знову згенерувати той самий ключ з пароля.
+Nonce (24) — щоб алгоритм знав, як саме були зміщені дані.
+Ciphertext + MAC — власне зашифрований зміст файлу.

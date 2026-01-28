@@ -1,8 +1,8 @@
 #include <iostream>
 #include "CLI11.HPP"
 #include "sodium.h"
-void encrypt_file(const std::string& input, const std::string& output, const char* password);
-void decrypt_file(const std::string& input, const std::string& output, const char* password);
+#include "encryption.hpp"
+
 
 int main(int argc, char** argv) 
 {
