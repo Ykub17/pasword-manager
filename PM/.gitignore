@@ -1,18 +1,14 @@
 # binaries
 password_encryptor
 a.out
-
+pasman
 # encrypted / data files
 *.enc
 *.txt
 
 # macOS
 .DS_Store
-.DS_Store
-git add .gitignore
-git commit -m "Remove .DS_Store and add to gitignore"
-
-
-
-
-.DS_Store
+*.o
+*.out
+build/
+cmake-build-*/

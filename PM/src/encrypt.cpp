@@ -1,7 +1,7 @@
 #include "sodium_crypto.hpp"
 #include "user_io.h"
 #include "encryption.hpp"
-#include "Salt.hpp"
+#include "Constants.hpp"
 
 void encrypt_file(const std::string& input, const std::string& output, const char* password)
 {

@@ -11,6 +11,7 @@
 1. Для збірки проекту по-перше треба встановити бібліотеку [libsodium](https://doc.libsodium.org/doc/installation) (подробна інструкція для її встановлення)
 
 2. Скомпілюйте проект:
+```
    g++ -std=c++17 -Iinclude \
     src/main.cpp \
     src/encrypt.cpp \
@@ -19,13 +20,14 @@
     src/sodium_crypto.cpp \
     -Llibs -lsodium \
     -o pasman
+```
 
 
 ##  Користування проектом
 Запуск проекта ./pasman
-1. Для того щоб шифрувати треба вести таку команду *./pasman encrypt --input pasw.txt --output pasw.enc --password MyStrongPassword123*, і також треба заздалегіть створити файл **pasw.txt** , де будуть міститься паролі 
+1. Для того щоб шифрувати треба вести таку команду *./pasman encrypt``` --input pasw.txt --output pasw.enc --password MyStrongPassword123*```, і також треба заздалегіть створити файл **pasw.txt** , де будуть міститься паролі 
 
-2. Для дешифрування треба вести команду *./pasman decrypt --input pasw.enc --output decrypted.txt --password MyStrongPassword123*  
+2. Для дешифрування треба вести команду``` *./pasman decrypt --input pasw.enc --output decrypted.txt --password MyStrongPassword123*  ```
 
 ## Алгоритм шифруівння    
 1. Етап створення Salt(16 байтів) і  Nonce(26 байтів).
