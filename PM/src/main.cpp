@@ -1,16 +1,10 @@
 #include <iostream>
 #include "CLI11.HPP"
-#include "sodium.h"
 #include "encryption.hpp"
 
 
 int main(int argc, char** argv) 
 {
-    if (sodium_init() < 0) 
-    {
-        std::cerr << "libsodium init failed\n";
-        return 1;
-    }
 
     CLI::App app("File encryption / decryption tool");
 

@@ -1,11 +1,12 @@
 #include "sodium_crypto.hpp"
 #include "user_io.h"
 #include "encryption.hpp"
-#include "Constants.hpp"
+
 
 void decrypt_file(const std::string& input, const std::string& output, const char* password)
 {
-    SodiumCrypto::init();
+    SodiumCrypto crypto;
+    crypto.init();
 
     constexpr size_t SALT_SIZE  = CryptoConfig::SALT_SIZE;
     constexpr size_t NONCE_SIZE = CryptoConfig::NONCE_SIZE;
@@ -23,7 +24,7 @@ void decrypt_file(const std::string& input, const std::string& output, const cha
     std::memcpy(salt, data.data(), SALT_SIZE);
     std::memcpy(nonce, data.data() + SALT_SIZE, NONCE_SIZE);
 
-    SodiumCrypto::derive_key(key, KEY_SIZE, password, salt);
+    crypto.derive_key(key, KEY_SIZE, password, salt);
 
     size_t offset = SALT_SIZE + NONCE_SIZE;
 
@@ -32,6 +33,6 @@ void decrypt_file(const std::string& input, const std::string& output, const cha
         data.end()
     );
 
-    auto plaintext = SodiumCrypto::decrypt(ciphertext, nonce, key);
+    auto plaintext = crypto.decrypt(ciphertext, nonce, key);
     write_file(output, plaintext);
 }

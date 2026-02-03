@@ -2,21 +2,27 @@
 #include <sodium.h>
 #include <stdexcept>
 
-void SodiumCrypto::init() {
-    if (sodium_init() < 0) {
-        throw std::runtime_error("libsodium init failed");
+SodiumCrypto crypto;
+void crypto.init() 
+{
+    static bool initialized = false;
+    if (!initialized) {
+        if (sodium_init() < 0) {
+            throw std::runtime_error("Failed to initialize libsodium");
+        }
+        initialized = true;
     }
 }
 
-void SodiumCrypto::generate_salt(unsigned char* salt, size_t size) {
+void crypto.generate_salt(unsigned char* salt, size_t size) {
     randombytes_buf(salt, size);
 }
 
-void SodiumCrypto::generate_nonce(unsigned char* nonce, size_t size) {
+void crypto.generate_nonce(unsigned char* nonce, size_t size) {
     randombytes_buf(nonce, size);
 }
 
-void SodiumCrypto::derive_key(
+void crypto.derive_key(
     unsigned char* key,
     size_t key_size,
     const char* password,
@@ -37,7 +43,7 @@ void SodiumCrypto::derive_key(
     }
 }
 
-std::vector<unsigned char> SodiumCrypto::encrypt(
+std::vector<unsigned char> crypto.encrypt(
     const std::vector<unsigned char>& plaintext,
     const unsigned char* nonce,
     const unsigned char* key
@@ -64,7 +70,7 @@ std::vector<unsigned char> SodiumCrypto::encrypt(
     return ciphertext;
 }
 
-std::vector<unsigned char> SodiumCrypto::decrypt(
+std::vector<unsigned char> crypto.decrypt(
     const std::vector<unsigned char>& ciphertext,
     const unsigned char* nonce,
     const unsigned char* key
