@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 SodiumCrypto crypto;
-void crypto.init() 
+void SodiumCrypto::init() 
 {
     static bool initialized = false;
     if (!initialized) {
@@ -14,15 +14,15 @@ void crypto.init()
     }
 }
 
-void crypto.generate_salt(unsigned char* salt, size_t size) {
+void SodiumCrypto::generate_salt(unsigned char* salt, size_t size) {
     randombytes_buf(salt, size);
 }
 
-void crypto.generate_nonce(unsigned char* nonce, size_t size) {
+void SodiumCrypto::generate_nonce(unsigned char* nonce, size_t size) {
     randombytes_buf(nonce, size);
 }
 
-void crypto.derive_key(
+void SodiumCrypto::derive_key(
     unsigned char* key,
     size_t key_size,
     const char* password,
@@ -43,7 +43,7 @@ void crypto.derive_key(
     }
 }
 
-std::vector<unsigned char> crypto.encrypt(
+std::vector<unsigned char> SodiumCrypto::encrypt(
     const std::vector<unsigned char>& plaintext,
     const unsigned char* nonce,
     const unsigned char* key
@@ -70,7 +70,7 @@ std::vector<unsigned char> crypto.encrypt(
     return ciphertext;
 }
 
-std::vector<unsigned char> crypto.decrypt(
+std::vector<unsigned char> SodiumCrypto::decrypt(
     const std::vector<unsigned char>& ciphertext,
     const unsigned char* nonce,
     const unsigned char* key
